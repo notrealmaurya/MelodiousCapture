@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFF0E6</color>
+    <color name = "colorPrimary">#151515</color>
+    <color name = "colorPrimaryDark">#151515</color>
+    <color name = "colorAccent">#03DAC5</color>
+
+
+
+    <color name="blue_moon">#FF25316D</color>
+    <color name="blue_soft">#FF5F9DF7</color>
+    <color name="orange_sun">#FFFD841F</color>
+    <color name="yellow_soft">#FFFDFDBD</color>
+    <color name="gray">#FF8C8C8C</color>
+
+
+    <color name="statusBarDark">#202930</color>
+    <color name="statusBarLight">#CBBFB2</color>
+
+
+    <color name="dark_black">#181C1F</color>
+    <color name="light_black">#202930</color>
+    <color name="line_colour">#333B42</color>
+    <color name="text_size">#AFB4B6</color>
+    <color name="text_songName">#CED2D4</color>
+    <color name="popuup_menu_color">#2D2D2D</color>
+
+    <color name="red">#FF1100</color>
+
+</resources>

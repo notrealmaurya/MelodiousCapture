@@ -1,0 +1,57 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.DTxVoiceRecorder" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
+
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">@color/statusBarLight</item>
+
+    </style>
+
+
+    <!--  layout style-->
+    <style name="LayoutStyle">
+        <item name="android:background">@color/white</item>
+    </style>
+
+
+
+<!--    SearchViewStyle-->
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
+    <!--    Bottom Dialog-->
+    <style name="ThemeOverlay.App.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/ShoppingList.BottomSheetDialog</item>
+    </style>
+
+    <style name="ShoppingList.BottomSheetDialog" parent="Widget.MaterialComponents.BottomSheet.Modal">
+        <item name="backgroundTint">@android:color/transparent</item>
+    </style>
+
+    <!--NextPreviousRipple-->
+    <style name="next_previous_ripple">
+        <item name="android:background">@drawable/mode_light_bg_next_previous_ripple</item>
+    </style>
+
+
+
+    <!-- StatusBarSearchLayoutStyle-->
+    <style name="StatusBarSearchLayoutStyle">
+        <item name="android:background">@drawable/mode_light_bg_toolbar</item>
+    </style>
+
+
+
+    <!-- StatusBarLayoutStyle-->
+    <style name="StatusBarLayoutStyle">
+        <item name="android:background">@drawable/mode_light_bg_custom_appbar</item>
+    </style>
+
+
+</resources>

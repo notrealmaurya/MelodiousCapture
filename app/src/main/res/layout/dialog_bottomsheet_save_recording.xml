@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/pop_sheet"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    app:cardBackgroundColor="@color/light_black"
+    app:cardCornerRadius="20dp"
+    app:cardPreventCornerOverlap="true"
+    app:cardUseCompatPadding="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <com.airbnb.lottie.LottieAnimationView
+            android:id="@+id/lotteView"
+            android:layout_width="120dp"
+            android:layout_height="80dp"
+            android:scaleType="fitCenter"
+            app:lottie_autoPlay="true"
+            android:layout_marginTop="20dp"
+            android:layout_gravity="center"
+            app:lottie_fileName="save.json"
+            app:lottie_loop="true" />
+
+
+
+        <EditText
+            android:id="@+id/save_EditText"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginBottom="25dp"
+            android:background="@drawable/edittext_bg"
+            android:paddingStart="15dp"
+            android:text="HELLO"
+            android:textColor="@color/white"
+            android:textSize="14sp"
+            android:theme="@style/SearchViewStyle" />
+
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/line_colour" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/save_CancelText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripplefactor_lightblack"
+                android:gravity="center"
+                android:text="Cancel"
+                android:textColor="#C6BEBE"
+                android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/line_colour" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/save_OKText"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:background="@drawable/bg_ripplefactor_lightblack"
+                android:clickable="true"
+                android:gravity="center"
+                android:padding="15dp"
+                android:text="OK"
+                android:textColor="#0F70E6"
+                android:textSize="16sp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

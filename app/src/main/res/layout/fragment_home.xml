@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/LayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".HomeFragment">
+
+
+    <LinearLayout
+        android:id="@+id/topLayout"
+        style="@style/StatusBarLayoutStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:padding="15dp"
+            android:text="Recorder"
+            android:textSize="40sp" />
+
+        <LinearLayout
+            android:id="@+id/visibilitySearchToolbar"
+            style="@style/StatusBarSearchLayoutStyle"
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="20dp"
+            android:visibility="visible"
+            android:layout_marginBottom="10dp">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/searchViewHomeFragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                app:iconifiedByDefault="false"
+                app:queryBackground="@null"
+                app:queryHint="Search Recording Files" />
+
+            <ImageView
+                android:id="@+id/mainActivityMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:src="@drawable/icon_menu" />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/visibilityTopToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/cab_top_toolbar_internal"
+                layout="@layout/cab_top_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+    <TextView
+        android:layout_below="@id/topLayout"
+        android:id="@+id/fileCountHomeFragment"
+        style="@style/next_previous_ripple"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:padding="5dp"
+        android:text="Recording Files : 0"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/fileCountHomeFragment"
+        android:id="@+id/recyclerViewHomeFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="180dp"
+        android:scrollbars="vertical" />
+
+    <androidx.cardview.widget.CardView
+        android:visibility="visible"
+        android:id="@+id/visibilityCardViewHomeFragment"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        app:cardBackgroundColor="#575C5C5C"
+        app:cardCornerRadius="20dp"
+        app:cardPreventCornerOverlap="true"
+        app:cardUseCompatPadding="true">
+        >
+
+        <ImageView
+            android:id="@+id/fragmentRecorderRecordingButton"
+            android:layout_width="90dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_record" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Bottom toolbar -->
+    <RelativeLayout
+        android:id="@+id/visibilityBottomToolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_alignParentBottom="true">
+
+        <include
+            android:id="@+id/cabBottomToolbarHomeFragment"
+            layout="@layout/cab_bottom_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

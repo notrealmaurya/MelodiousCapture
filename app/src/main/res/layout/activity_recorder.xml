@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    style="@style/LayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".RecorderActivity">
+
+    <LinearLayout
+        android:id="@+id/layout_topBTN"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/PlayerBackBtn"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_marginStart="5dp"
+            android:padding="20dp"
+            android:src="@drawable/icon_back" />
+
+
+        <TextView
+            android:id="@+id/songNAME"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:ellipsize="marquee"
+            android:paddingStart="10dp"
+            android:singleLine="true"
+            android:text="Recording"
+            android:textSize="20sp" />
+
+    </LinearLayout>
+
+
+    <com.example.dtxvoicerecorder.WaveFormView
+        android:id="@+id/waveFormView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/layout_topBTN"
+        android:layout_marginTop="16dp" />
+
+
+    <TextView
+        android:id="@+id/activityRecorderTimer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/waveFormView"
+        android:gravity="center"
+        android:layout_marginTop="20dp"
+        android:text="00:00:00"
+        android:textSize="55sp" />
+
+    <LinearLayout
+        android:id="@+id/bottomLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="40dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/recorderActivityCancelRecording"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/icon_cancel" />
+
+        <ImageView
+            android:id="@+id/recorderActivityPlayPauseRecording"
+            android:layout_width="90dp"
+            android:layout_height="90dp"
+            android:src="@drawable/icon_record" />
+
+        <ImageView
+            android:id="@+id/recorderActivitySaveRecording"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/icon_save" />
+
+    </LinearLayout>
+
+
+</RelativeLayout>
