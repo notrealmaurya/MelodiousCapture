@@ -3,6 +3,7 @@ package com.example.dtxvoicerecorder
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -31,11 +32,12 @@ import java.util.Locale
 
 class HomeFragment : Fragment(), OnItemClickListener {
 
-    private lateinit var fragmentRecorderBinding: FragmentHomeBinding
+    private lateinit var fragmentHomeBinding: FragmentHomeBinding
     private lateinit var records: ArrayList<RecorderData>
     private lateinit var db: AppDatabase
     private var isAllChecked = false
     private var isLongClickListenerInitialized = false
+    private var filePath: String = ""
 
     companion object {
         lateinit var homeAdapter: RecorderFilesAdapter
@@ -46,18 +48,18 @@ class HomeFragment : Fragment(), OnItemClickListener {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        fragmentRecorderBinding = FragmentHomeBinding.inflate(inflater, container, false)
-        val view = fragmentRecorderBinding.root
+        fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
+        val view = fragmentHomeBinding.root
 
         records = ArrayList()
         db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "audioRecords").build()
 
-        fragmentRecorderBinding.recyclerViewHomeFragment.setHasFixedSize(true)
-        fragmentRecorderBinding.recyclerViewHomeFragment.setItemViewCacheSize(13)
-        fragmentRecorderBinding.recyclerViewHomeFragment.layoutManager =
+        fragmentHomeBinding.recyclerViewHomeFragment.setHasFixedSize(true)
+        fragmentHomeBinding.recyclerViewHomeFragment.setItemViewCacheSize(13)
+        fragmentHomeBinding.recyclerViewHomeFragment.layoutManager =
             LinearLayoutManager(context)
         homeAdapter = RecorderFilesAdapter(requireContext(), this, records)
-        fragmentRecorderBinding.recyclerViewHomeFragment.adapter = homeAdapter
+        fragmentHomeBinding.recyclerViewHomeFragment.adapter = homeAdapter
 
 
         // Assuming 'view' is the root view of your fragment
@@ -65,7 +67,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
         view.requestFocus()
         view.setOnKeyListener { v, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
-                if (fragmentRecorderBinding.visibilityBottomToolbar.visibility == View.VISIBLE || fragmentRecorderBinding.visibilityTopToolbar.visibility == View.VISIBLE) {
+                if (fragmentHomeBinding.visibilityBottomToolbar.visibility == View.VISIBLE || fragmentHomeBinding.visibilityTopToolbar.visibility == View.VISIBLE) {
                     topToolbarCloseOptionFunction()
                     return@setOnKeyListener true // Consume the event
                 }
@@ -73,6 +75,14 @@ class HomeFragment : Fragment(), OnItemClickListener {
             false // Let the system handle the event
         }
 
+        if (isExternalStorageWritable()) {
+            val downloadsFolder =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            filePath = File(downloadsFolder, "dtxVoicerecorder").absolutePath + "/"
+        } else {
+            filePath = "${requireActivity().filesDir.absolutePath}/"
+        }
+        isFilePresent(filePath)
 
         listeners()
 
@@ -80,11 +90,15 @@ class HomeFragment : Fragment(), OnItemClickListener {
         return view
     }
 
+    private fun isExternalStorageWritable(): Boolean {
+        val state = Environment.getExternalStorageState()
+        return Environment.MEDIA_MOUNTED == state
+    }
 
     private fun listeners() {
 
         //SearchView
-        fragmentRecorderBinding.searchViewHomeFragment.setOnQueryTextListener(object :
+        fragmentHomeBinding.searchViewHomeFragment.setOnQueryTextListener(object :
             SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
@@ -97,18 +111,18 @@ class HomeFragment : Fragment(), OnItemClickListener {
         })
 
         //RecordingButton
-        fragmentRecorderBinding.fragmentRecorderRecordingButton.setOnClickListener {
+        fragmentHomeBinding.fragmentRecorderRecordingButton.setOnClickListener {
             val intent = Intent(activity, RecorderActivity::class.java)
             startActivity(intent)
         }
 
         //Toolbar CLose
-        fragmentRecorderBinding.cabTopToolbarInternal.topToolbarClose.setOnClickListener {
+        fragmentHomeBinding.cabTopToolbarInternal.topToolbarClose.setOnClickListener {
             topToolbarCloseOptionFunction()
         }
 
         //Toolbar SelectAll
-        fragmentRecorderBinding.cabTopToolbarInternal.topToolbarSelectedall.setOnClickListener {
+        fragmentHomeBinding.cabTopToolbarInternal.topToolbarSelectedall.setOnClickListener {
             isAllChecked = !isAllChecked
             records.map { it.isChecked = isAllChecked }
             homeAdapter.notifyDataSetChanged()
@@ -119,7 +133,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 disableDeleteAndSend()
             }
             disableRenameAndDetails()
-            fragmentRecorderBinding.cabTopToolbarInternal.topToolbarSelectedall.setImageResource(
+            fragmentHomeBinding.cabTopToolbarInternal.topToolbarSelectedall.setImageResource(
                 if (isAllChecked) R.drawable.icon_selectall else R.drawable.icon_select_none
             )
 
@@ -127,7 +141,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
         //ToolbarShare
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarShare.setOnClickListener {
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarShare.setOnClickListener {
             val selectedFiles = records.filter { it.isChecked }
 
             if (selectedFiles.isNotEmpty()) {
@@ -161,7 +175,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
         }
 
         //ToolbarRename
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarRename.setOnClickListener {
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarRename.setOnClickListener {
             val renameSheetDialog =
                 BottomSheetDialog(requireContext(), R.style.ThemeOverlay_App_BottomSheetDialog)
             val renameSheetView = layoutInflater.inflate(R.layout.bottomsheet_rename, null)
@@ -222,7 +236,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
         //ToolbarDelete
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarDelete.setOnClickListener {
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarDelete.setOnClickListener {
             val deleteSheetDialog =
                 BottomSheetDialog(requireContext(), R.style.ThemeOverlay_App_BottomSheetDialog)
             val deleteSheetView = layoutInflater.inflate(R.layout.bottomsheet_delete, null)
@@ -262,7 +276,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
         //ToolbarDetails
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarDetails.setOnClickListener {
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarDetails.setOnClickListener {
 
             val detailSheetDialog =
                 BottomSheetDialog(requireContext(), R.style.ThemeOverlay_App_BottomSheetDialog)
@@ -293,7 +307,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
                 val fileSizeInBytes: Long = selectedFile.fileSize.toLong()
                 popupDetailsSizeText.text = "Size: ${getFormattedFileSize(fileSizeInBytes)}"
-                popupDetailsLastModifiedText.text = "Last Modified: ${getFormattedDate(selectedFile.timestamp)}"
+                popupDetailsLastModifiedText.text =
+                    "Last Modified: ${getFormattedDate(selectedFile.timestamp)}"
 
             }
 
@@ -320,7 +335,11 @@ class HomeFragment : Fragment(), OnItemClickListener {
         if (sizeInBytes <= 0) return "0 B"
         val units = arrayOf("B", "KB", "MB", "GB", "TB")
         val digitGroups = (Math.log10(sizeInBytes.toDouble()) / Math.log10(1024.0)).toInt()
-        return String.format("%.1f %s", sizeInBytes / Math.pow(1024.0, digitGroups.toDouble()), units[digitGroups])
+        return String.format(
+            "%.1f %s",
+            sizeInBytes / Math.pow(1024.0, digitGroups.toDouble()),
+            units[digitGroups]
+        )
     }
 
     private fun getFormattedDate(lastModified: Long): String {
@@ -347,7 +366,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
             withContext(Dispatchers.Main) {
                 homeAdapter.notifyDataSetChanged()
-                fragmentRecorderBinding.fileCountHomeFragment.text =
+                fragmentHomeBinding.fileCountHomeFragment.text =
                     "Recording Files : ${homeAdapter.itemCount}"
             }
         }
@@ -362,7 +381,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
             homeAdapter.notifyItemChanged(position)
             // Check if all items are selected
             val selectedAll = records.all { it.isChecked }
-            fragmentRecorderBinding.cabTopToolbarInternal.topToolbarSelectedall.setImageResource(
+            fragmentHomeBinding.cabTopToolbarInternal.topToolbarSelectedall.setImageResource(
                 if (selectedAll) R.drawable.icon_selectall else R.drawable.icon_select_none
             )
             var checkBoxSelected = records.count { it.isChecked }
@@ -393,10 +412,10 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
     override fun onItemLongClickListener(position: Int) {
         isLongClickListenerInitialized = true
-        fragmentRecorderBinding.visibilityBottomToolbar.visibility = View.VISIBLE
-        fragmentRecorderBinding.visibilityTopToolbar.visibility = View.VISIBLE
-        fragmentRecorderBinding.visibilitySearchToolbar.visibility = View.GONE
-        fragmentRecorderBinding.visibilityCardViewHomeFragment.visibility = View.GONE
+        fragmentHomeBinding.visibilityBottomToolbar.visibility = View.VISIBLE
+        fragmentHomeBinding.visibilityTopToolbar.visibility = View.VISIBLE
+        fragmentHomeBinding.visibilitySearchToolbar.visibility = View.GONE
+        fragmentHomeBinding.visibilityCardViewHomeFragment.visibility = View.GONE
 
         homeAdapter.setEditMode(true)
         records[position].isChecked = !records[position].isChecked
@@ -409,77 +428,87 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
     private fun topToolbarCloseOptionFunction() {
-        fragmentRecorderBinding.visibilityBottomToolbar.visibility = View.GONE
-        fragmentRecorderBinding.visibilityTopToolbar.visibility = View.GONE
-        fragmentRecorderBinding.visibilitySearchToolbar.visibility = View.VISIBLE
-        fragmentRecorderBinding.visibilityCardViewHomeFragment.visibility = View.VISIBLE
+        fragmentHomeBinding.visibilityBottomToolbar.visibility = View.GONE
+        fragmentHomeBinding.visibilityTopToolbar.visibility = View.GONE
+        fragmentHomeBinding.visibilitySearchToolbar.visibility = View.VISIBLE
+        fragmentHomeBinding.visibilityCardViewHomeFragment.visibility = View.VISIBLE
 
         records.map { it.isChecked = false }
         homeAdapter.setEditMode(false)
     }
 
     private fun disableRenameAndDetails() {
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.setImageResource(
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.setImageResource(
             R.drawable.icon_rename_disabled
         )
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.setImageResource(
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.setImageResource(
             R.drawable.icon_details_disabled
         )
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.isClickable =
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.isClickable =
             false
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.isClickable =
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.isClickable =
             false
     }
 
     private fun disableDeleteAndSend() {
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.setImageResource(
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.setImageResource(
             R.drawable.icon_delete_disabled
         )
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.isClickable =
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.isClickable =
             false
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.setImageResource(
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.setImageResource(
             R.drawable.icon_share_disabled
         )
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.isClickable =
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.isClickable =
             false
     }
 
     private fun enableRenameAndDetails() {
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.setImageResource(
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.setImageResource(
             R.drawable.icon_rename
         )
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.setImageResource(
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.setImageResource(
             R.drawable.icon_details
         )
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.isClickable =
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.isClickable =
             true
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.isClickable =
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.isClickable =
             true
     }
 
     private fun enableDeleteAndSend() {
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.setImageResource(
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.setImageResource(
             R.drawable.icon_delete
         )
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.isClickable =
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.isClickable =
             true
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.setImageResource(
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.setImageResource(
             R.drawable.icon_share
         )
-        fragmentRecorderBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.isClickable =
+        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.isClickable =
             true
     }
+
+    private fun isFilePresent(filePath: String): Boolean {
+        val file = File(filePath)
+        return file.exists()
+    }
+
 
 
     override fun onResume() {
         super.onResume()
+        updateRecyclerView()
+    }
+
+    private fun updateRecyclerView() {
         GlobalScope.launch {
             val retrievedData = db.audioRecordDao().getAll()
             records.clear()
             records.addAll(retrievedData)
             withContext(Dispatchers.Main) {
                 homeAdapter.notifyDataSetChanged()
-                fragmentRecorderBinding.fileCountHomeFragment.text =
+                fragmentHomeBinding.fileCountHomeFragment.text =
                     "Recording Files : ${homeAdapter.itemCount}"
             }
         }
