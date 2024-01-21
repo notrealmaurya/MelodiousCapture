@@ -20,9 +20,9 @@ class WorkManager(appContext: Context, workerParams: WorkerParameters) :
         // ...
 
         // Refresh RecyclerView if necessary
-        withContext(Dispatchers.Main) {
-            // Assuming you have a method to update the RecyclerView
-            updateRecyclerView()
-        }
+//        withContext(Dispatchers.Main) {
+//            // Assuming you have a method to update the RecyclerView
+//            updateRecyclerView()
+//        }
     }
 }

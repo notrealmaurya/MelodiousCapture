@@ -36,8 +36,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-
-
     private fun permission() {
         if (ContextCompat.checkSelfPermission(
                 applicationContext,
@@ -80,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*Handle permission request results*/
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String?>,

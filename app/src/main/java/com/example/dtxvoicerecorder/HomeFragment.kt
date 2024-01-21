@@ -19,16 +19,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.dtxvoicerecorder.database.AppDatabase
+import com.example.dtxvoicerecorder.database.RecorderData
+import com.example.dtxvoicerecorder.database.RecorderFilesAdapter
 import com.example.dtxvoicerecorder.databinding.FragmentHomeBinding
+import com.example.dtxvoicerecorder.utils.OnItemClickListener
+import com.example.dtxvoicerecorder.utils.getFileExtension
+import com.example.dtxvoicerecorder.utils.getFormattedDate
+import com.example.dtxvoicerecorder.utils.getFormattedFileSize
+import com.example.dtxvoicerecorder.utils.isExternalStorageWritable
+import com.example.dtxvoicerecorder.utils.isFilePresent
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 
 class HomeFragment : Fragment(), OnItemClickListener {
 
@@ -88,11 +94,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
         return view
-    }
-
-    private fun isExternalStorageWritable(): Boolean {
-        val state = Environment.getExternalStorageState()
-        return Environment.MEDIA_MOUNTED == state
     }
 
     private fun listeners() {
@@ -224,7 +225,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
             }
 
 
-
             rename_CancelText.setOnClickListener {
                 renameSheetDialog.dismiss()
             }
@@ -233,7 +233,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
             renameSheetDialog.show()
 
         }
-
 
         //ToolbarDelete
         fragmentHomeBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarDelete.setOnClickListener {
@@ -273,7 +272,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
             deleteSheetDialog.show()
             topToolbarCloseOptionFunction()
         }
-
 
         //ToolbarDetails
         fragmentHomeBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarDetails.setOnClickListener {
@@ -331,33 +329,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
     }
 
-    private fun getFormattedFileSize(sizeInBytes: Long): String {
-        if (sizeInBytes <= 0) return "0 B"
-        val units = arrayOf("B", "KB", "MB", "GB", "TB")
-        val digitGroups = (Math.log10(sizeInBytes.toDouble()) / Math.log10(1024.0)).toInt()
-        return String.format(
-            "%.1f %s",
-            sizeInBytes / Math.pow(1024.0, digitGroups.toDouble()),
-            units[digitGroups]
-        )
-    }
-
-    private fun getFormattedDate(lastModified: Long): String {
-        val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm:ss", Locale.getDefault())
-        return sdf.format(Date(lastModified))
-    }
-
-
-    // Function to get file extension
-    private fun getFileExtension(fileName: String): String {
-        val dotIndex = fileName.lastIndexOf('.')
-        return if (dotIndex != -1) {
-            fileName.substring(dotIndex + 1)
-        } else {
-            ""
-        }
-    }
-
     private fun searchDatabase(query: String) {
         GlobalScope.launch {
             records.clear()
@@ -371,7 +342,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
             }
         }
     }
-
 
     override fun onItemClickListener(position: Int) {
         val audioRecord = records[position]
@@ -488,12 +458,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
         fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.isClickable =
             true
     }
-
-    private fun isFilePresent(filePath: String): Boolean {
-        val file = File(filePath)
-        return file.exists()
-    }
-
 
 
     override fun onResume() {

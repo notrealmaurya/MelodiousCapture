@@ -1,4 +1,4 @@
-package com.example.dtxvoicerecorder
+package com.example.dtxvoicerecorder.database
 
 import androidx.room.Entity
 import androidx.room.Ignore

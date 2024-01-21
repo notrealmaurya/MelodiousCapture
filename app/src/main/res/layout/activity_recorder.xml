@@ -39,7 +39,7 @@
     </LinearLayout>
 
 
-    <com.example.dtxvoicerecorder.WaveFormView
+    <com.example.dtxvoicerecorder.utils.WaveFormView
         android:id="@+id/waveFormView"
         android:layout_width="match_parent"
         android:layout_height="200dp"

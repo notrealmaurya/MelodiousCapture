@@ -1,6 +1,5 @@
-package com.example.dtxvoicerecorder
+package com.example.dtxvoicerecorder.database
 
-import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -19,7 +18,7 @@ interface RecorderDao {
     fun insert(vararg audioRecord: RecorderData)
 
     @Delete
-    fun delete(audioRecord:RecorderData)
+    fun delete(audioRecord: RecorderData)
 
     @Delete
     fun delete(audioRecord: Array<RecorderData>)

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.os.Environment
 import android.os.VibrationEffect
 import android.os.Vibrator
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.EditText
@@ -15,15 +14,15 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
+import com.example.dtxvoicerecorder.database.AppDatabase
+import com.example.dtxvoicerecorder.database.RecorderData
 import com.example.dtxvoicerecorder.databinding.ActivityRecorderBinding
+import com.example.dtxvoicerecorder.utils.isExternalStorageWritable
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.File
-import java.io.FileOutputStream
 import java.io.IOException
-import java.io.ObjectOutputStream
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -127,11 +126,11 @@ class RecorderActivity : AppCompatActivity(), Timer.OnTimerTickInterface {
         bottomSheetDialog.show()
     }
 
-
     private fun startRecording() {
 
         if (isExternalStorageWritable()) {
-            val downloadsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+            val downloadsFolder =
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
             dirPath = File(downloadsFolder, "dtxVoicerecorder").absolutePath + "/"
         } else {
             dirPath = "${filesDir.absolutePath}/"
@@ -164,7 +163,8 @@ class RecorderActivity : AppCompatActivity(), Timer.OnTimerTickInterface {
 
 
     private fun saveRecording(fileName: String) {
-        val downloadsFolder = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
+        val downloadsFolder =
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS)
         val dtxVoicerecorderFolder = File(downloadsFolder, "dtxVoicerecorder")
 
         if (!dtxVoicerecorderFolder.exists()) {
@@ -183,7 +183,8 @@ class RecorderActivity : AppCompatActivity(), Timer.OnTimerTickInterface {
         val fileSize = fileSizeInBytes
         val timeStamp = Date().time
         // var ampsPath = "$newFilePath$fileName"
-        val record = RecorderData(fileName, newFilePath.absolutePath, timeStamp, duration, "", fileSize)
+        val record =
+            RecorderData(fileName, newFilePath.absolutePath, timeStamp, duration, "", fileSize)
 
         GlobalScope.launch {
             db.audioRecordDao().insert(record)
@@ -191,8 +192,6 @@ class RecorderActivity : AppCompatActivity(), Timer.OnTimerTickInterface {
 
         HomeFragment.homeAdapter.notifyDataSetChanged()
     }
-
-
 
 
     private fun showCancelRecordingDialog() {
@@ -249,9 +248,5 @@ class RecorderActivity : AppCompatActivity(), Timer.OnTimerTickInterface {
 
     }
 
-    private fun isExternalStorageWritable(): Boolean {
-        val state = Environment.getExternalStorageState()
-        return Environment.MEDIA_MOUNTED == state
-    }
 
 }

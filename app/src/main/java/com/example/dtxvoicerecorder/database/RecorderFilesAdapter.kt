@@ -1,4 +1,4 @@
-package com.example.dtxvoicerecorder
+package com.example.dtxvoicerecorder.database
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.dtxvoicerecorder.databinding.RecordedItemBinding
+import com.example.dtxvoicerecorder.utils.OnItemClickListener
 import java.text.SimpleDateFormat
-import java.util.Collections
 import java.util.Date
 
 class RecorderFilesAdapter(
@@ -53,12 +53,12 @@ class RecorderFilesAdapter(
 
 
             if (editMode) {
-                holder.chekbox.isClickable=false
-                holder.chekbox.visibility = View.VISIBLE
-                holder.chekbox.isChecked = record.isChecked
+                holder.checkbox.isClickable=false
+                holder.checkbox.visibility = View.VISIBLE
+                holder.checkbox.isChecked = record.isChecked
             }else{
-                holder.chekbox.visibility = View.GONE
-                holder.chekbox.isChecked = false
+                holder.checkbox.visibility = View.GONE
+                holder.checkbox.isChecked = false
             }
 
 
@@ -84,7 +84,7 @@ class RecorderFilesAdapter(
         val AudioDate = binding.AudioDate
         val AudioDuration = binding.AudioDuration
         val root = binding.root
-        val chekbox = binding.checkboxMusicItem
+        val checkbox = binding.checkboxMusicItem
 
         init {
             root.setOnClickListener(this)
