@@ -5,6 +5,7 @@ import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 fun getFormattedFileSize(sizeInBytes: Long): String {
     if (sizeInBytes <= 0) return "0 B"
@@ -44,4 +45,11 @@ fun isFilePresent(filePath: String): Boolean {
 
 
 
+fun formatDuration(duration: Long): String {
+    val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
+    val seconds = TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) -
+            TimeUnit.MINUTES.toSeconds(minutes)
+
+    return String.format("%02d:%02d", minutes, seconds)
+}
 

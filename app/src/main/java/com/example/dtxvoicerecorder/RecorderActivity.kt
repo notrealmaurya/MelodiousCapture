@@ -61,6 +61,7 @@ class RecorderActivity : AppCompatActivity(), Timer.OnTimerTickInterface {
     }
 
     private fun listeners() {
+
         activityRecorderBinding.PlayerBackBtn.setOnClickListener {
             finish()
         }

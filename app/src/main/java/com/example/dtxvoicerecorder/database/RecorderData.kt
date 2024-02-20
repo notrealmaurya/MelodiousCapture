@@ -22,11 +22,3 @@ data class RecorderData(
     var isChecked = false
 }
 
-
-fun formatDuration(duration: Long): String {
-    val minutes = TimeUnit.MINUTES.convert(duration, TimeUnit.MILLISECONDS)
-    val seconds = TimeUnit.SECONDS.convert(duration, TimeUnit.MILLISECONDS) -
-            TimeUnit.MINUTES.toSeconds(minutes)
-
-    return String.format("%02d:%02d", minutes, seconds)
-}

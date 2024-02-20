@@ -8,7 +8,7 @@ import android.os.Looper
 import android.widget.SeekBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.dtxvoicerecorder.database.formatDuration
+import com.example.dtxvoicerecorder.utils.formatDuration
 import com.example.dtxvoicerecorder.databinding.ActivityPlayerBinding
 
 class PlayerActivity : AppCompatActivity() {
