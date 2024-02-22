@@ -12,13 +12,11 @@ data class RecorderData(
     var timestamp: Long,
     var duration: String,
     var ampsPath: String,
-    var fileSize:String
+    var fileSize: String,
+    var isChecked: Boolean = false
 
 ) {
     @PrimaryKey(autoGenerate = true)
     var id: Long = 0
-
-    @Ignore
-    var isChecked = false
 }
 

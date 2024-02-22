@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    app:cardBackgroundColor="@color/light_black"
+    app:cardBackgroundColor="@color/PopUpWindowBottomColour"
     app:cardCornerRadius="20dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
@@ -40,7 +40,7 @@
             android:background="@drawable/edittext_bg"
             android:paddingStart="15dp"
             android:text="HELLO"
-            android:textColor="@color/white"
+            android:textColor="@color/ImageViewAndTextViewColour"
             android:textSize="14sp"
             android:theme="@style/SearchViewStyle" />
 
@@ -48,7 +48,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line_colour" />
+            android:background="@color/ViewColor" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,10 +61,10 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:background="@drawable/bg_ripplefactor_lightblack"
+                android:background="@drawable/bg_ripplefactor"
                 android:gravity="center"
                 android:text="Cancel"
-                android:textColor="#C6BEBE"
+                android:textColor="@color/ImageViewAndTextViewColour"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -75,7 +75,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/line_colour" />
+                    android:background="@color/ViewColor" />
 
             </LinearLayout>
 
@@ -85,7 +85,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:background="@drawable/bg_ripplefactor_lightblack"
+                android:background="@drawable/bg_ripplefactor"
                 android:clickable="true"
                 android:gravity="center"
                 android:padding="15dp"

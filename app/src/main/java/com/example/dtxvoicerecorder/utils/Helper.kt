@@ -1,6 +1,8 @@
 package com.example.dtxvoicerecorder.utils
 
+import android.content.Context
 import android.os.Environment
+import android.widget.Toast
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -53,3 +55,6 @@ fun formatDuration(duration: Long): String {
     return String.format("%02d:%02d", minutes, seconds)
 }
 
+fun showToast(context: Context, message: String) {
+    Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+}

@@ -25,6 +25,17 @@
     </style>
 
 
+    <!--NextPreviousRipple-->
+    <style name="next_previous_ripple">
+        <item name="android:background">@drawable/mode_light_bg_next_previous_ripple</item>
+    </style>
+
+
+    <!-- StatusBarSearchLayoutStyle-->
+    <style name="StatusBarSearchLayoutStyle">
+        <item name="android:background">@drawable/mode_light_bg_toolbar</item>
+    </style>
+
     <!--    Bottom Dialog-->
     <style name="ThemeOverlay.App.BottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/ShoppingList.BottomSheetDialog</item>
@@ -34,23 +45,20 @@
         <item name="backgroundTint">@android:color/transparent</item>
     </style>
 
-    <!--NextPreviousRipple-->
-    <style name="next_previous_ripple">
-        <item name="android:background">@drawable/mode_light_bg_next_previous_ripple</item>
-    </style>
-
-
-
-    <!-- StatusBarSearchLayoutStyle-->
-    <style name="StatusBarSearchLayoutStyle">
-        <item name="android:background">@drawable/mode_light_bg_toolbar</item>
-    </style>
-
-
-
     <!-- StatusBarLayoutStyle-->
     <style name="StatusBarLayoutStyle">
         <item name="android:background">@drawable/mode_light_bg_custom_appbar</item>
+    </style>
+
+    <!-- BottomBarLayoutStyle-->
+    <style name="BottomBarLayoutStyle">
+        <item name="android:background">@color/statusBarLight</item>
+    </style>
+
+
+    <!-- PopUpWindowStyle-->
+    <style name="PopUpWindowStyle">
+        <item name="android:background">@drawable/bg_popup_window</item>
     </style>
 
 

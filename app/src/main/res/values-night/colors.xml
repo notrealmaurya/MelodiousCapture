@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <color name="PopUpWindowColour">#1B2029</color>
+
+    <color name="PopUpWindowBottomColour">#161B23</color>
+
+
+    <color name="ImageViewAndTextViewColour">#EAE7E7</color>
+
+
+    <color name="UploadBackgroundColour">@color/statusBarDark</color>
+
+    <color name="StatusBarColour">@color/statusBarDark</color>
+
+    <color name="ViewColor">#4C4C4C</color>
+
+</resources>

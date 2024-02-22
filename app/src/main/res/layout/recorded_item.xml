@@ -42,6 +42,7 @@
                 android:marqueeRepeatLimit="marquee_forever"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
+                android:textColor="@color/ImageViewAndTextViewColour"
                 android:text="Your Full Music Name Here"
                 android:textSize="16sp" />
 
@@ -56,6 +57,7 @@
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:singleLine="true"
+                    android:textColor="@color/ImageViewAndTextViewColour"
                     android:text="00:00:00"
                     android:textSize="13sp" />
 
@@ -66,6 +68,7 @@
                     android:layout_marginStart="10dp"
                     android:gravity="center"
                     android:singleLine="true"
+                    android:textColor="@color/ImageViewAndTextViewColour"
                     android:text="dd/mm/yyyy hh:mm"
                     android:textSize="13sp" />
 
@@ -88,7 +91,7 @@
         android:layout_height="1dp"
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
-        android:background="#73777A" />
+        android:background="@color/ViewColor" />
 
 </LinearLayout>
 

@@ -12,15 +12,9 @@
 
     <!--  layout style-->
     <style name="LayoutStyle">
-        <item name="android:background">#000000</item>
+        <item name="android:background">#111C25</item>
     </style>
 
-
-<!--    SearchViewStyle-->
-    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
-        <item name="android:textCursorDrawable">@drawable/cursor</item>
-        <item name="android:textSize">16sp</item>
-    </style>
 
 
     <!--    Bottom Dialog-->
@@ -33,16 +27,36 @@
     </style>
 
 
+    <!--  StatusBarLayoutStyle-->
+    <style name="StatusBarLayoutStyle">
+        <item name="android:background">@drawable/mode_night_bg_custom_appbar</item>
+    </style>
+
+
+    <!-- BottomBarLayoutStyle-->
+    <style name="BottomBarLayoutStyle">
+        <item name="android:background">@color/light_black</item>
+    </style>
+
+
+
+    <!-- PopUpWindowStyle-->
+    <style name="PopUpWindowStyle">
+        <item name="android:background">@drawable/bg_popup_window</item>
+    </style>
+
+
+    <!--    SearchViewStyle-->
+    <style name="SearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="android:textCursorDrawable">@drawable/cursor</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+
 
     <!-- StatusBarSearchLayoutStyle-->
     <style name="StatusBarSearchLayoutStyle">
         <item name="android:background">@drawable/mode_dark_bg_toolbar</item>
-    </style>
-
-
-    <!--  StatusBarLayoutStyle-->
-    <style name="StatusBarLayoutStyle">
-        <item name="android:background">@drawable/mode_night_bg_custom_appbar</item>
     </style>
 
 </resources>

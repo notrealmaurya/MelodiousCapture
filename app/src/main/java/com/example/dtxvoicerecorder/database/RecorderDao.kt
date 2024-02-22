@@ -15,16 +15,14 @@ interface RecorderDao {
     fun searchDatabase(query: String): List<RecorderData>
 
     @Insert
-    fun insert(vararg audioRecord: RecorderData)
+    fun insert(vararg audioRecords: RecorderData)
 
     @Delete
-    fun delete(audioRecord: RecorderData)
+    fun delete(audioRecords: RecorderData)
 
-    @Delete
-    fun delete(audioRecord: Array<RecorderData>)
 
     @Update
-    fun update(audioRecord: RecorderData)
+    fun update(audioRecords: RecorderData)
 
 
 }

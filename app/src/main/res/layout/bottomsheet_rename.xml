@@ -13,6 +13,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/PopUpWindowBottomColour"
         android:orientation="vertical">
 
 
@@ -31,16 +32,16 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:text="Rename"
-            android:textColor="@color/white"
+            android:textColor="@color/ImageViewAndTextViewColour"
             android:textSize="15sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="40dp"
-            android:layout_marginBottom="15dp"
             android:layout_marginTop="5dp"
             android:layout_marginEnd="40dp"
+            android:layout_marginBottom="15dp"
             android:orientation="vertical">
 
             <TextView
@@ -48,8 +49,8 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="Enter new Name"
-                android:textColor="@color/white"
-                android:textSize="14sp"/>
+                android:textColor="@color/ImageViewAndTextViewColour"
+                android:textSize="14sp" />
 
             <EditText
                 android:id="@+id/rename_EditText"
@@ -59,7 +60,7 @@
                 android:background="@drawable/edittext_bg"
                 android:paddingStart="15dp"
                 android:text="HELLO"
-                android:textColor="@color/white"
+                android:textColor="@color/ImageViewAndTextViewColour"
                 android:textSize="14sp"
                 android:theme="@style/SearchViewStyle" />
 
@@ -68,7 +69,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@color/line_colour" />
+            android:background="@color/ViewColor" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -81,10 +82,10 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:background="@drawable/bg_ripplefactor_lightblack"
+                android:background="@drawable/bg_ripplefactor"
                 android:gravity="center"
                 android:text="Cancel"
-                android:textColor="#C6BEBE"
+                android:textColor="@color/ImageViewAndTextViewColour"
                 android:textSize="16sp" />
 
             <LinearLayout
@@ -95,7 +96,7 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/line_colour" />
+                    android:background="@color/ViewColor" />
 
             </LinearLayout>
 
@@ -105,7 +106,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:background="@drawable/bg_ripplefactor_lightblack"
+                android:background="@drawable/bg_ripplefactor"
                 android:clickable="true"
                 android:gravity="center"
                 android:padding="15dp"

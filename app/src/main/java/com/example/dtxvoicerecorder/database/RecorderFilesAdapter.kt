@@ -16,6 +16,7 @@ class RecorderFilesAdapter(
     private val itemList: ArrayList<RecorderData>
 ) : RecyclerView.Adapter<RecorderFilesAdapter.RecorderFileHolder>() {
 
+
     private var editMode = false
     fun isEditMode(): Boolean {
         return editMode
@@ -53,24 +54,20 @@ class RecorderFilesAdapter(
 
 
             if (editMode) {
-                holder.checkbox.isClickable=false
+                holder.checkbox.isClickable = false
                 holder.checkbox.visibility = View.VISIBLE
                 holder.checkbox.isChecked = record.isChecked
-            }else{
+            } else {
                 holder.checkbox.visibility = View.GONE
                 holder.checkbox.isChecked = false
             }
 
-
+            holder.checkbox.setOnCheckedChangeListener { _, isChecked ->
+                listener.onItemCheckedChange(position, isChecked)
+            }
         }
+
     }
-
-
-    fun updateData(newData: List<RecorderData>) {
-        itemList.clear()
-        itemList.addAll(newData)
-    }
-
 
     override fun getItemCount(): Int {
         return itemList.size
@@ -83,7 +80,7 @@ class RecorderFilesAdapter(
         val AudioName = binding.AudioName
         val AudioDate = binding.AudioDate
         val AudioDuration = binding.AudioDuration
-        val root = binding.root
+        private val root = binding.root
         val checkbox = binding.checkboxMusicItem
 
         init {

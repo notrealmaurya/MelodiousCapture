@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="purple_200">#FFBB86FC</color>
-    <color name="purple_500">#FF6200EE</color>
-    <color name="purple_700">#FF3700B3</color>
-    <color name="teal_200">#FF03DAC5</color>
-    <color name="teal_700">#FF018786</color>
-    <color name="black">#FF000000</color>
     <color name="white">#FFF0E6</color>
-    <color name = "colorPrimary">#151515</color>
-    <color name = "colorPrimaryDark">#151515</color>
-    <color name = "colorAccent">#03DAC5</color>
+    <color name="colorPrimary">#151515</color>
+    <color name="colorPrimaryDark">#151515</color>
+    <color name="colorAccent">#03DAC5</color>
+
+    <color name="red">#BD0404</color>
 
 
+    <!--   custom theme color-->
+    <color name="light_green">#7CFF5F</color>
+    <color name="light_red">#FF4D4D</color>
+    <color name="light_blue">#95F6ED</color>
+    <color name="light_orange">#F4A749</color>
+    <color name="deep_blue">#03AFDA</color>
+    <color name="purple">#9A61FF</color>
+    <color name="pink">#C932FF</color>
+    <color name="yellow">#FFF100</color>
+    <color name="light_brown">#ECE3B0</color>
 
-    <color name="blue_moon">#FF25316D</color>
-    <color name="blue_soft">#FF5F9DF7</color>
-    <color name="orange_sun">#FFFD841F</color>
-    <color name="yellow_soft">#FFFDFDBD</color>
-    <color name="gray">#FF8C8C8C</color>
 
+    <!--    Light Mode-->
 
     <color name="statusBarDark">#202930</color>
-    <color name="statusBarLight">#CBBFB2</color>
-
+    <color name="statusBarLight">#E5faff</color>
 
     <color name="dark_black">#181C1F</color>
     <color name="light_black">#202930</color>
-    <color name="line_colour">#333B42</color>
-    <color name="text_size">#AFB4B6</color>
-    <color name="text_songName">#CED2D4</color>
-    <color name="popuup_menu_color">#2D2D2D</color>
 
-    <color name="red">#FF1100</color>
+    <color name="PopUpWindowColour">#FFFFFF</color>
+    <color name="PopUpWindowBottomColour">#E8E8E8</color>
+
+    <color name="ImageViewAndTextViewColour">#000000</color>
+
+    <color name="UploadBackgroundColour">#FFFFFF</color>
+
+    <color name="StatusBarColour">@color/statusBarLight</color>
+
+    <color name="ViewColor">#EAE0E0</color>
 
 </resources>

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/light_black"
+    app:cardBackgroundColor="@color/PopUpWindowBottomColour"
     app:cardCornerRadius="20dp"
     app:cardPreventCornerOverlap="true"
     app:cardUseCompatPadding="true">
@@ -32,7 +32,7 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:text="Name"
-            android:textColor="@color/white"
+            android:textColor="@color/ImageViewAndTextViewColour"
             android:textSize="16sp" />
 
 
@@ -50,7 +50,7 @@
                 android:layout_gravity="center_vertical"
                 android:singleLine="true"
                 android:text="Location: "
-                android:textColor="#A29A9A"
+                android:textColor="@color/ImageViewAndTextViewColour"
                 android:textSize="13sp" />
 
             <TextView
@@ -79,7 +79,7 @@
                 android:layout_gravity="center_vertical"
                 android:clickable="false"
                 android:text="Size:"
-                android:textColor="#A29A9A"
+                android:textColor="@color/ImageViewAndTextViewColour"
                 android:textSize="13sp" />
 
             <TextView
@@ -90,7 +90,7 @@
                 android:clickable="false"
                 android:gravity="center"
                 android:text="bytes"
-                android:textColor="#A29A9A"
+                android:textColor="@color/ImageViewAndTextViewColour"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -107,7 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="Last Modified:"
-                android:textColor="#A29A9A"
+                android:textColor="@color/ImageViewAndTextViewColour"
                 android:textSize="13sp" />
 
             <TextView
@@ -116,7 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:text="DD//MM//YYYY"
-                android:textColor="#A29A9A"
+                android:textColor="@color/ImageViewAndTextViewColour"
                 android:textSize="13sp" />
 
         </LinearLayout>
@@ -125,7 +125,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="20dp"
-            android:background="@color/line_colour" />
+            android:background="@color/ViewColor" />
 
 
         <TextView
@@ -133,12 +133,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:background="@drawable/bg_ripplefactor_lightblack"
+            android:background="@drawable/bg_ripplefactor"
             android:clickable="true"
             android:gravity="center"
             android:padding="15dp"
             android:text="OK"
-            android:textColor="#CDC6C6"
+            android:textColor="@color/ImageViewAndTextViewColour"
             android:textSize="16sp" />
 
 

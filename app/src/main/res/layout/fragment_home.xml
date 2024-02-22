@@ -31,8 +31,8 @@
             android:layout_gravity="center_vertical"
             android:layout_marginLeft="15dp"
             android:layout_marginRight="20dp"
-            android:visibility="visible"
-            android:layout_marginBottom="10dp">
+            android:layout_marginBottom="10dp"
+            android:visibility="visible">
 
             <androidx.appcompat.widget.SearchView
                 android:id="@+id/searchViewHomeFragment"
@@ -58,14 +58,40 @@
             android:id="@+id/visibilityTopToolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
-            <include
-                android:id="@+id/cab_top_toolbar_internal"
-                layout="@layout/cab_top_layout"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/top_toolbar_close"
+                android:layout_width="50dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginStart="30dp"
+                android:background="@drawable/bg_ripplefactor"
+                android:clickable="true"
+                android:padding="15dp"
+                android:src="@drawable/icon_close" />
+
+            <TextView
+                android:id="@+id/top_toolbar_selectedtext"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="vsss"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/top_toolbar_selectedall"
+                android:layout_width="50dp"
+                android:layout_height="55dp"
+                android:layout_gravity="center"
+                android:layout_marginEnd="30dp"
+                android:background="@drawable/bg_ripplefactor"
+                android:clickable="true"
+                android:padding="8dp"
+                android:src="@drawable/icon_select_none" />
+
 
         </LinearLayout>
 
@@ -74,36 +100,37 @@
 
 
     <TextView
-        android:layout_below="@id/topLayout"
         android:id="@+id/fileCountHomeFragment"
-        style="@style/next_previous_ripple"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/topLayout"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:padding="5dp"
+        android:background="@drawable/bg_bottombar"
+        android:paddingHorizontal="15dp"
+        android:paddingVertical="5dp"
         android:text="Recording Files : 0"
-        android:textColor="@color/black"
+        android:textColor="@color/ImageViewAndTextViewColour"
         android:textSize="14sp" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/fileCountHomeFragment"
         android:id="@+id/recyclerViewHomeFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/fileCountHomeFragment"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="180dp"
         android:scrollbars="vertical" />
 
 
-
     <androidx.cardview.widget.CardView
-        android:visibility="visible"
         android:id="@+id/visibilityCardViewHomeFragment"
-        android:layout_alignParentBottom="true"
         android:layout_width="match_parent"
         android:layout_height="180dp"
-        app:cardBackgroundColor="#575C5C5C"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        style="@style/LayoutStyle"
+        app:cardBackgroundColor="@color/StatusBarColour"
         app:cardCornerRadius="20dp"
         app:cardPreventCornerOverlap="true"
         app:cardUseCompatPadding="true">
@@ -115,23 +142,134 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:src="@drawable/icon_record" />
+
     </androidx.cardview.widget.CardView>
 
     <!-- Bottom toolbar -->
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/visibilityBottomToolbar"
+        style="@style/PopUpWindowStyle"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        android:layout_alignParentBottom="true">
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:baselineAligned="false"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="30dp">
 
-        <include
-            android:id="@+id/cabBottomToolbarHomeFragment"
-            layout="@layout/cab_bottom_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:id="@+id/layoutBottomToolbarShare"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_ripplefactor"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
 
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/bottomToolbar_share_icon"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:clickable="false"
+                android:src="@drawable/icon_share" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:text="Send"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutBottomToolbarRename"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_ripplefactor"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/bottomToolbar_rename_icon"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:clickable="false"
+                android:src="@drawable/icon_rename" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:text="Rename"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutBottomToolbarDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_ripplefactor"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/bottomToolbar_delete_icon"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:clickable="false"
+                android:src="@drawable/icon_delete" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:text="Delete"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/layoutBottomToolbarDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@drawable/bg_ripplefactor"
+            android:clickable="true"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <ImageView
+                android:id="@+id/bottomToolbar_details_icon"
+                android:layout_width="30dp"
+                android:layout_height="25dp"
+                android:clickable="false"
+                android:src="@drawable/icon_details" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:text="Details"
+                android:textSize="11sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 
 </RelativeLayout>

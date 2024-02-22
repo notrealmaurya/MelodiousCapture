@@ -29,6 +29,7 @@ import com.example.dtxvoicerecorder.utils.getFormattedDate
 import com.example.dtxvoicerecorder.utils.getFormattedFileSize
 import com.example.dtxvoicerecorder.utils.isExternalStorageWritable
 import com.example.dtxvoicerecorder.utils.isFilePresent
+import com.example.dtxvoicerecorder.utils.showToast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -51,9 +52,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = fragmentHomeBinding.root
 
@@ -62,16 +62,15 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         fragmentHomeBinding.recyclerViewHomeFragment.setHasFixedSize(true)
         fragmentHomeBinding.recyclerViewHomeFragment.setItemViewCacheSize(13)
-        fragmentHomeBinding.recyclerViewHomeFragment.layoutManager =
-            LinearLayoutManager(context)
+        fragmentHomeBinding.recyclerViewHomeFragment.layoutManager = LinearLayoutManager(context)
         homeAdapter = RecorderFilesAdapter(requireContext(), this, records)
         fragmentHomeBinding.recyclerViewHomeFragment.adapter = homeAdapter
 
 
-        // Assuming 'view' is the root view of your fragment
+
         view.isFocusableInTouchMode = true
         view.requestFocus()
-        view.setOnKeyListener { v, keyCode, event ->
+        view.setOnKeyListener { _, keyCode, event ->
             if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
                 if (fragmentHomeBinding.visibilityBottomToolbar.visibility == View.VISIBLE || fragmentHomeBinding.visibilityTopToolbar.visibility == View.VISIBLE) {
                     topToolbarCloseOptionFunction()
@@ -89,6 +88,11 @@ class HomeFragment : Fragment(), OnItemClickListener {
             filePath = "${requireActivity().filesDir.absolutePath}/"
         }
         isFilePresent(filePath)
+
+
+        fragmentHomeBinding.visibilityTopToolbar.visibility = View.GONE
+        fragmentHomeBinding.visibilityBottomToolbar.visibility = View.GONE
+        fragmentHomeBinding.visibilityCardViewHomeFragment.visibility = View.VISIBLE
 
         listeners()
 
@@ -118,12 +122,12 @@ class HomeFragment : Fragment(), OnItemClickListener {
         }
 
         //Toolbar CLose
-        fragmentHomeBinding.cabTopToolbarInternal.topToolbarClose.setOnClickListener {
+        fragmentHomeBinding.topToolbarClose.setOnClickListener {
             topToolbarCloseOptionFunction()
         }
 
         //Toolbar SelectAll
-        fragmentHomeBinding.cabTopToolbarInternal.topToolbarSelectedall.setOnClickListener {
+        fragmentHomeBinding.topToolbarSelectedall.setOnClickListener {
             isAllChecked = !isAllChecked
             records.map { it.isChecked = isAllChecked }
             homeAdapter.notifyDataSetChanged()
@@ -134,199 +138,219 @@ class HomeFragment : Fragment(), OnItemClickListener {
                 disableDeleteAndSend()
             }
             disableRenameAndDetails()
-            fragmentHomeBinding.cabTopToolbarInternal.topToolbarSelectedall.setImageResource(
+            fragmentHomeBinding.topToolbarSelectedall.setImageResource(
                 if (isAllChecked) R.drawable.icon_selectall else R.drawable.icon_select_none
             )
 
         }
 
-
         //ToolbarShare
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarShare.setOnClickListener {
-            val selectedFiles = records.filter { it.isChecked }
+        fragmentHomeBinding.layoutBottomToolbarShare.setOnClickListener {
+            if (records.count { it.isChecked } >= 1) {
+                val selectedFiles = records.filter { it.isChecked }
 
-            if (selectedFiles.isNotEmpty()) {
-                val fileUris = ArrayList<Uri>()
-                val fileNames = ArrayList<String>()
 
-                for (selectedFile in selectedFiles) {
-                    val file = File(selectedFile.filePath)
-                    val fileUri = FileProvider.getUriForFile(
-                        requireContext(),
-                        "${requireContext().packageName}.provider",
-                        file
-                    )
-                    fileUris.add(fileUri)
-                    fileNames.add(file.name)
-                }
+                if (selectedFiles.isNotEmpty()) {
+                    val fileUris = ArrayList<Uri>()
+                    val fileNames = ArrayList<String>()
 
-                if (fileUris.isNotEmpty()) {
-                    val shareIntent = Intent(Intent.ACTION_SEND_MULTIPLE)
-                    shareIntent.type = "*/*"
-                    shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, fileUris)
-                    startActivity(
-                        Intent.createChooser(
-                            shareIntent,
-                            "Share ${fileNames.size} files"
+                    for (selectedFile in selectedFiles) {
+                        val file = File(selectedFile.filePath)
+                        val fileUri = FileProvider.getUriForFile(
+                            requireContext(), "${requireContext().packageName}.provider", file
                         )
-                    )
+                        fileUris.add(fileUri)
+                        fileNames.add(file.name)
+                    }
+
+                    if (fileUris.isNotEmpty()) {
+                        val shareIntent = Intent(Intent.ACTION_SEND_MULTIPLE)
+                        shareIntent.type = "*/*"
+                        shareIntent.putParcelableArrayListExtra(Intent.EXTRA_STREAM, fileUris)
+                        startActivity(
+                            Intent.createChooser(
+                                shareIntent, "Share ${fileNames.size} files"
+                            )
+                        )
+                    }
                 }
+                topToolbarCloseOptionFunction()
+            } else {
+                disableDeleteAndSend()
             }
-            topToolbarCloseOptionFunction()
         }
 
         //ToolbarRename
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarRename.setOnClickListener {
-            val renameSheetDialog =
-                BottomSheetDialog(requireContext(), R.style.ThemeOverlay_App_BottomSheetDialog)
-            val renameSheetView = layoutInflater.inflate(R.layout.bottomsheet_rename, null)
-            renameSheetDialog.setContentView(renameSheetView)
-            renameSheetDialog.setCanceledOnTouchOutside(true)
+        fragmentHomeBinding.layoutBottomToolbarRename.setOnClickListener {
 
-            val renameEditText = renameSheetView.findViewById<EditText>(R.id.rename_EditText)
-            val rename_CancelText = renameSheetView.findViewById<TextView>(R.id.rename_CancelText)
-            val rename_OKText = renameSheetView.findViewById<TextView>(R.id.rename_OKText)
+            if (records.count { it.isChecked } == 1) {
+                val renameSheetDialog =
+                    BottomSheetDialog(requireContext(), R.style.ThemeOverlay_App_BottomSheetDialog)
+                val renameSheetView = layoutInflater.inflate(R.layout.bottomsheet_rename, null)
+                renameSheetDialog.setContentView(renameSheetView)
+                renameSheetDialog.setCanceledOnTouchOutside(true)
+
+                val renameEditText = renameSheetView.findViewById<EditText>(R.id.rename_EditText)
+                val rename_CancelText =
+                    renameSheetView.findViewById<TextView>(R.id.rename_CancelText)
+                val rename_OKText = renameSheetView.findViewById<TextView>(R.id.rename_OKText)
 
 
-            val recordRename = records.filter { it.isChecked }.get(0)
+                val recordRename = records.filter { it.isChecked }[0]
 
-            renameEditText.requestFocus()
-            renameEditText.setText(recordRename.fileName)
-            val nameWithoutExtension = recordRename.fileName.substring(
-                0,
-                recordRename.fileName.length - getFileExtension(recordRename.fileName).length
-            )
-            renameEditText.setSelection(0, nameWithoutExtension.length)
-            renameSheetDialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
+                renameEditText.requestFocus()
+                renameEditText.setText(recordRename.fileName)
+                val nameWithoutExtension = recordRename.fileName.substring(
+                    0, recordRename.fileName.length - getFileExtension(recordRename.fileName).length
+                )
+                renameEditText.setSelection(0, nameWithoutExtension.length)
+                renameSheetDialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
 
-            rename_OKText.setOnClickListener {
-                val newFileName = renameEditText.text.toString()
-                val file = File(recordRename.filePath)
-                val fileExtension = getFileExtension(file.name)
-                val newFile = File(file.parent, "$newFileName.$fileExtension")
+                rename_OKText.setOnClickListener {
+                    val newFileName = renameEditText.text.toString()
+                    val file = File(recordRename.filePath)
+                    val fileExtension = getFileExtension(file.name)
+                    val newFile = File(file.parent, "$newFileName.$fileExtension")
 
-                if (file.renameTo(newFile)) {
-                    GlobalScope.launch {
-                        recordRename.fileName = newFileName
-                        recordRename.filePath = newFile.absolutePath
-                        db.audioRecordDao().update(recordRename)
-                        requireActivity().runOnUiThread {
-                            homeAdapter.notifyItemChanged(records.indexOf(recordRename))
+                    if (file.renameTo(newFile)) {
+                        GlobalScope.launch {
+                            recordRename.fileName = newFileName
+                            recordRename.filePath = newFile.absolutePath
+                            db.audioRecordDao().update(recordRename)
+                            requireActivity().runOnUiThread {
+                                homeAdapter.notifyItemChanged(records.indexOf(recordRename))
+                            }
                         }
+                        renameSheetDialog.dismiss()
+                    } else {
+                        Toast.makeText(
+                            requireContext(), "Failed to rename the file", Toast.LENGTH_SHORT
+                        ).show()
                     }
-                    renameSheetDialog.dismiss()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Failed to rename the file",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
+
+
+                rename_CancelText.setOnClickListener {
+                    renameSheetDialog.dismiss()
+                }
+
+                topToolbarCloseOptionFunction()
+                renameSheetDialog.show()
+
+            } else {
+                disableRenameAndDetails()
             }
-
-
-            rename_CancelText.setOnClickListener {
-                renameSheetDialog.dismiss()
-            }
-
-            topToolbarCloseOptionFunction()
-            renameSheetDialog.show()
-
         }
 
         //ToolbarDelete
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarDelete.setOnClickListener {
-            val deleteSheetDialog =
-                BottomSheetDialog(requireContext(), R.style.ThemeOverlay_App_BottomSheetDialog)
-            val deleteSheetView = layoutInflater.inflate(R.layout.bottomsheet_delete, null)
-            deleteSheetDialog.setContentView(deleteSheetView)
-            deleteSheetDialog.setCanceledOnTouchOutside(true)
-            val deleteSelectedText = deleteSheetView.findViewById<TextView>(R.id.deleteSelectedText)
-            val deleteDeleteText = deleteSheetView.findViewById<TextView>(R.id.deleteDeleteText)
-            val deleteCancelText = deleteSheetView.findViewById<TextView>(R.id.deleteCancelText)
+        fragmentHomeBinding.layoutBottomToolbarDelete.setOnClickListener {
 
-            val recordCounts = records.count() { it.isChecked }
-            deleteSelectedText.text = "Delete ${recordCounts} selected items"
+            if (records.count { it.isChecked } >= 1) {
+                val deleteSheetDialog =
+                    BottomSheetDialog(requireContext(), R.style.ThemeOverlay_App_BottomSheetDialog)
+                val deleteSheetView = layoutInflater.inflate(R.layout.bottomsheet_delete, null)
+                deleteSheetDialog.setContentView(deleteSheetView)
+                deleteSheetDialog.setCanceledOnTouchOutside(true)
+                val deleteSelectedText =
+                    deleteSheetView.findViewById<TextView>(R.id.deleteSelectedText)
+                val deleteDeleteText = deleteSheetView.findViewById<TextView>(R.id.deleteDeleteText)
+                val deleteCancelText = deleteSheetView.findViewById<TextView>(R.id.deleteCancelText)
 
-            // Delete OK
-            deleteDeleteText.setOnClickListener {
-                val toDelete = records.filter { it.isChecked }.toTypedArray()
-                // Before deletion
-                Log.d("Records Before Deletion", records.toString())
-                viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
-                    db.audioRecordDao().delete(toDelete)
-                    withContext(Dispatchers.Main) {
-                        records.removeAll(toDelete)
-                        Log.d("Records After Deletion", records.toString())
-                        homeAdapter.notifyDataSetChanged()
-                        deleteSheetDialog.dismiss()
+                val itemsToRemove = records.filter { it.isChecked }
+                val recordCounts = itemsToRemove.size
+                deleteSelectedText.text = "Delete $recordCounts selected items"
+
+                // Delete OK
+                deleteDeleteText.setOnClickListener {
+                    GlobalScope.launch {
+                        for (item in itemsToRemove) {
+                            db.audioRecordDao().delete(item)
+                        }
+
+                        withContext(Dispatchers.Main) {
+                            records.removeAll(itemsToRemove)
+                            homeAdapter.notifyDataSetChanged()
+                        }
                     }
+                    updateRecyclerView()
+                    deleteSheetDialog.dismiss()
                 }
+
+                deleteCancelText.setOnClickListener {
+                    deleteSheetDialog.dismiss()
+                }
+
+                deleteSheetDialog.show()
+                topToolbarCloseOptionFunction()
+            } else {
+                disableDeleteAndSend()
             }
-
-
-            deleteCancelText.setOnClickListener {
-                deleteSheetDialog.dismiss()
-            }
-
-            deleteSheetDialog.show()
-            topToolbarCloseOptionFunction()
         }
+
 
         //ToolbarDetails
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.layoutBottomToolbarDetails.setOnClickListener {
+        fragmentHomeBinding.layoutBottomToolbarDetails.setOnClickListener {
 
-            val detailSheetDialog =
-                BottomSheetDialog(requireContext(), R.style.ThemeOverlay_App_BottomSheetDialog)
-            val detailsSheetView =
-                layoutInflater.inflate(R.layout.bottomsheet_details, null)
-            detailSheetDialog.setContentView(detailsSheetView)
-            detailSheetDialog.setCanceledOnTouchOutside(true)
+            if (records.count { it.isChecked } == 1) {
+                val detailSheetDialog =
+                    BottomSheetDialog(requireContext(), R.style.ThemeOverlay_App_BottomSheetDialog)
+                val detailsSheetView = layoutInflater.inflate(R.layout.bottomsheet_details, null)
+                detailSheetDialog.setContentView(detailsSheetView)
+                detailSheetDialog.setCanceledOnTouchOutside(true)
 
-            val popupDetailsNameText =
-                detailsSheetView.findViewById<TextView>(R.id.popupDetailsNameText)
-            val popupDetailsPathText =
-                detailsSheetView.findViewById<TextView>(R.id.popupDetailsPathText)
-            val popupDetailsSizeText =
-                detailsSheetView.findViewById<TextView>(R.id.popupDetailsSizeText)
-            val popupDetailsLastModifiedText =
-                detailsSheetView.findViewById<TextView>(R.id.popupDetailsLastModifiedText)
-            val popupDetailsOKText =
-                detailsSheetView.findViewById<TextView>(R.id.popupDetailsOKText)
+                val popupDetailsNameText =
+                    detailsSheetView.findViewById<TextView>(R.id.popupDetailsNameText)
+                val popupDetailsPathText =
+                    detailsSheetView.findViewById<TextView>(R.id.popupDetailsPathText)
+                val popupDetailsSizeText =
+                    detailsSheetView.findViewById<TextView>(R.id.popupDetailsSizeText)
+                val popupDetailsLastModifiedText =
+                    detailsSheetView.findViewById<TextView>(R.id.popupDetailsLastModifiedText)
+                val popupDetailsOKText =
+                    detailsSheetView.findViewById<TextView>(R.id.popupDetailsOKText)
 
 
-            // Assuming you have a File object representing the selected file
-            val selectedFiles = records.filter { it.isChecked }
+                // Assuming you have a File object representing the selected file
+                val selectedFiles = records.filter { it.isChecked }
 
-            for (selectedFile in selectedFiles) {
-                // Populate the details in the dialog for each selected file
-                popupDetailsNameText.text = "Name: ${selectedFile.fileName}"
-                popupDetailsPathText.text = "Path: ${selectedFile.filePath}"
+                for (selectedFile in selectedFiles) {
+                    // Populate the details in the dialog for each selected file
+                    popupDetailsNameText.text = "Name: ${selectedFile.fileName}"
+                    popupDetailsPathText.text = "Path: ${selectedFile.filePath}"
 
-                val fileSizeInBytes: Long = selectedFile.fileSize.toLong()
-                popupDetailsSizeText.text = "Size: ${getFormattedFileSize(fileSizeInBytes)}"
-                popupDetailsLastModifiedText.text =
-                    "Last Modified: ${getFormattedDate(selectedFile.timestamp)}"
+                    val fileSizeInBytes: Long = selectedFile.fileSize.toLong()
+                    popupDetailsSizeText.text = "Size: ${getFormattedFileSize(fileSizeInBytes)}"
+                    popupDetailsLastModifiedText.text =
+                        "Last Modified: ${getFormattedDate(selectedFile.timestamp)}"
 
+                }
+
+                popupDetailsOKText.setOnClickListener {
+                    detailSheetDialog.dismiss()
+                }
+                topToolbarCloseOptionFunction()
+                detailSheetDialog.show()
+
+                // Helper function to format file size (you can adjust this based on your requirements)
+
+
+                popupDetailsOKText.setOnClickListener {
+                    detailSheetDialog.dismiss()
+                }
+                topToolbarCloseOptionFunction()
+                detailSheetDialog.show()
+            } else {
+                disableRenameAndDetails()
             }
 
-            popupDetailsOKText.setOnClickListener {
-                detailSheetDialog.dismiss()
-            }
-            topToolbarCloseOptionFunction()
-            detailSheetDialog.show()
-
-            // Helper function to format file size (you can adjust this based on your requirements)
-
-
-            popupDetailsOKText.setOnClickListener {
-                detailSheetDialog.dismiss()
-            }
-            topToolbarCloseOptionFunction()
-            detailSheetDialog.show()
         }
 
 
+    }
+
+    override fun onItemCheckedChange(position: Int, isChecked: Boolean) {
+        val selectedCount = records.count { it.isChecked }
+        fragmentHomeBinding.topToolbarSelectedtext.text = "$selectedCount Selected"
     }
 
     private fun searchDatabase(query: String) {
@@ -351,10 +375,11 @@ class HomeFragment : Fragment(), OnItemClickListener {
             homeAdapter.notifyItemChanged(position)
             // Check if all items are selected
             val selectedAll = records.all { it.isChecked }
-            fragmentHomeBinding.cabTopToolbarInternal.topToolbarSelectedall.setImageResource(
+            fragmentHomeBinding.topToolbarSelectedall.setImageResource(
                 if (selectedAll) R.drawable.icon_selectall else R.drawable.icon_select_none
             )
-            var checkBoxSelected = records.count { it.isChecked }
+
+            val checkBoxSelected = records.count { it.isChecked }
             when (checkBoxSelected) {
                 0 -> {
                     disableDeleteAndSend()
@@ -408,55 +433,47 @@ class HomeFragment : Fragment(), OnItemClickListener {
     }
 
     private fun disableRenameAndDetails() {
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.setImageResource(
+        fragmentHomeBinding.bottomToolbarRenameIcon.setImageResource(
             R.drawable.icon_rename_disabled
         )
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.setImageResource(
+        fragmentHomeBinding.bottomToolbarDetailsIcon.setImageResource(
             R.drawable.icon_details_disabled
         )
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.isClickable =
-            false
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.isClickable =
-            false
+        fragmentHomeBinding.bottomToolbarDetailsIcon.isClickable = false
+        fragmentHomeBinding.bottomToolbarRenameIcon.isClickable = false
     }
 
     private fun disableDeleteAndSend() {
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.setImageResource(
+        fragmentHomeBinding.bottomToolbarDeleteIcon.setImageResource(
             R.drawable.icon_delete_disabled
         )
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.isClickable =
-            false
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.setImageResource(
+        fragmentHomeBinding.bottomToolbarDeleteIcon.isClickable = false
+        fragmentHomeBinding.bottomToolbarShareIcon.setImageResource(
             R.drawable.icon_share_disabled
         )
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.isClickable =
-            false
+        fragmentHomeBinding.bottomToolbarShareIcon.isClickable = false
     }
 
     private fun enableRenameAndDetails() {
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.setImageResource(
+        fragmentHomeBinding.bottomToolbarRenameIcon.setImageResource(
             R.drawable.icon_rename
         )
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.setImageResource(
+        fragmentHomeBinding.bottomToolbarDetailsIcon.setImageResource(
             R.drawable.icon_details
         )
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDetailsIcon.isClickable =
-            true
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarRenameIcon.isClickable =
-            true
+        fragmentHomeBinding.bottomToolbarDetailsIcon.isClickable = true
+        fragmentHomeBinding.bottomToolbarRenameIcon.isClickable = true
     }
 
     private fun enableDeleteAndSend() {
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.setImageResource(
+        fragmentHomeBinding.bottomToolbarDeleteIcon.setImageResource(
             R.drawable.icon_delete
         )
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarDeleteIcon.isClickable =
-            true
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.setImageResource(
+        fragmentHomeBinding.bottomToolbarDeleteIcon.isClickable = true
+        fragmentHomeBinding.bottomToolbarShareIcon.setImageResource(
             R.drawable.icon_share
         )
-        fragmentHomeBinding.cabBottomToolbarHomeFragment.bottomToolbarShareIcon.isClickable =
-            true
+        fragmentHomeBinding.bottomToolbarShareIcon.isClickable = true
     }
 
 
@@ -476,12 +493,6 @@ class HomeFragment : Fragment(), OnItemClickListener {
                     "Recording Files : ${homeAdapter.itemCount}"
             }
         }
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-
     }
 
 
