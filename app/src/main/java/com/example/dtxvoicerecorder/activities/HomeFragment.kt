@@ -26,6 +26,8 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import com.example.dtxvoicerecorder.R
@@ -61,6 +63,8 @@ class HomeFragment : Fragment(), OnItemClickListener {
     private var isLongClickListenerInitialized = false
     private var filePath: String = ""
     private val themeList = arrayOf("Light Mode", "Dark Mode", "Auto")
+
+    private lateinit var navController: NavController
 
 
     @Inject
@@ -140,8 +144,7 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         //RecordingButton
         fragmentHomeBinding.fragmentRecorderRecordingButton.setOnClickListener {
-            val intent = Intent(activity, RecorderActivity::class.java)
-            startActivity(intent)
+            navController.navigate(R.id.recorderActivity)
         }
 
         //Toolbar CLose
@@ -640,5 +643,11 @@ class HomeFragment : Fragment(), OnItemClickListener {
         }
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        navController = Navigation.findNavController(view)
+    }
 
 }
