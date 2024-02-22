@@ -28,13 +28,6 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Add the fragment to the container
-        val homeFragment = HomeFragment()
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, homeFragment)
-            .commit() // Allow state loss (optional)
-
-
         permission()
 
     }

@@ -37,7 +37,7 @@ class SplashFragment : Fragment() {
             {
                 navController.navigate(R.id.action_splashFragment_to_homeFragment)
 
-            }, 2250
+            }, 2100
         )
     }
 }
