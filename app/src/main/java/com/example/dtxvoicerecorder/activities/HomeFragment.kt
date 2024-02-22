@@ -1,42 +1,57 @@
-package com.example.dtxvoicerecorder
+package com.example.dtxvoicerecorder.activities
 
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
 import android.os.Environment
-import android.util.Log
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.method.LinkMovementMethod
+import android.text.style.ClickableSpan
+import android.text.style.ForegroundColorSpan
+import android.view.Gravity
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.EditText
+import android.widget.LinearLayout
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
+import com.example.dtxvoicerecorder.R
 import com.example.dtxvoicerecorder.database.AppDatabase
 import com.example.dtxvoicerecorder.database.RecorderData
 import com.example.dtxvoicerecorder.database.RecorderFilesAdapter
 import com.example.dtxvoicerecorder.databinding.FragmentHomeBinding
+import com.example.dtxvoicerecorder.databinding.PopupAboutDialogBinding
 import com.example.dtxvoicerecorder.utils.OnItemClickListener
+import com.example.dtxvoicerecorder.utils.SharedPreferenceHelper
 import com.example.dtxvoicerecorder.utils.getFileExtension
 import com.example.dtxvoicerecorder.utils.getFormattedDate
 import com.example.dtxvoicerecorder.utils.getFormattedFileSize
 import com.example.dtxvoicerecorder.utils.isExternalStorageWritable
 import com.example.dtxvoicerecorder.utils.isFilePresent
-import com.example.dtxvoicerecorder.utils.showToast
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class HomeFragment : Fragment(), OnItemClickListener {
 
     private lateinit var fragmentHomeBinding: FragmentHomeBinding
@@ -45,6 +60,11 @@ class HomeFragment : Fragment(), OnItemClickListener {
     private var isAllChecked = false
     private var isLongClickListenerInitialized = false
     private var filePath: String = ""
+    private val themeList = arrayOf("Light Mode", "Dark Mode", "Auto")
+
+
+    @Inject
+    lateinit var sharedPreferencesHelper: SharedPreferenceHelper
 
     companion object {
         lateinit var homeAdapter: RecorderFilesAdapter
@@ -56,6 +76,9 @@ class HomeFragment : Fragment(), OnItemClickListener {
     ): View {
         fragmentHomeBinding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = fragmentHomeBinding.root
+
+        sharedPreferencesHelper = SharedPreferenceHelper((requireContext()))
+
 
         records = ArrayList()
         db = Room.databaseBuilder(requireContext(), AppDatabase::class.java, "audioRecords").build()
@@ -345,6 +368,128 @@ class HomeFragment : Fragment(), OnItemClickListener {
 
         }
 
+
+        //menu
+        fragmentHomeBinding.menuHomeFragment.setOnClickListener {
+
+            val inflater =
+                requireActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            val popupView = inflater.inflate(R.layout.menu_layout, null)
+
+            val popupWindow = PopupWindow(
+                popupView,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                true
+            )
+            popupWindow.showAtLocation(fragmentHomeBinding.menuHomeFragment, Gravity.TOP, 150, 400)
+
+            val share = popupView.findViewById<LinearLayout>(R.id.shareLayoutPopUp)
+            val feedback = popupView.findViewById<LinearLayout>(R.id.feedbackLayoutPopUp)
+            val about = popupView.findViewById<LinearLayout>(R.id.aboutLayoutPopUp)
+            val exit = popupView.findViewById<LinearLayout>(R.id.exitLayoutPopUp)
+            val themeText = popupView.findViewById<TextView>(R.id.themeTextLayoutPopUp)
+            val theme = popupView.findViewById<LinearLayout>(R.id.themeLayoutPopUp)
+
+            var checkedTheme = sharedPreferencesHelper.theme
+            themeText.text = themeList[sharedPreferencesHelper.theme]
+
+            share.setOnClickListener {
+                popupWindow.dismiss()
+                val websiteUrl =
+                    "https://github.com/notrealmaurya"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl))
+                startActivity(intent)
+            }
+
+            theme.setOnClickListener {
+                popupWindow.dismiss()
+                val dialog = MaterialAlertDialogBuilder(requireContext())
+                    .setTitle("Change theme")
+                    .setPositiveButton("Ok") { _, _ ->
+                        sharedPreferencesHelper.theme = checkedTheme
+                        AppCompatDelegate.setDefaultNightMode(sharedPreferencesHelper.themeFlag[checkedTheme])
+                        themeText.text = themeList[sharedPreferencesHelper.theme]
+                    }
+                    .setSingleChoiceItems(themeList, checkedTheme) { _, which ->
+                        checkedTheme = which
+                    }
+                    .setNegativeButton("Cancel") { dialog, _ ->
+                        dialog.dismiss()
+                    }
+                    .setCancelable(false)
+                    .show()
+                dialog.setOnDismissListener {
+                    dialog.dismiss()
+                }
+
+
+            }
+
+            feedback.setOnClickListener {
+                popupWindow.dismiss()
+                val websiteUrl =
+                    "https://forms.gle/4gC2XzHDCaio7hUh8"
+                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl))
+                startActivity(intent)
+            }
+
+            about.setOnClickListener {
+                val popUpDialog = LayoutInflater.from(requireContext())
+                    .inflate(R.layout.popup_about_dialog, fragmentHomeBinding.root, false)
+                val bindingPopUp = PopupAboutDialogBinding.bind(popUpDialog)
+                val dialog =
+                    MaterialAlertDialogBuilder(requireContext(), R.style.PopUpWindowStyle).setView(
+                        popUpDialog
+                    )
+                        .setOnCancelListener {
+
+                        }
+                        .create()
+
+                bindingPopUp.aboutDialogThankyouButton.setOnClickListener {
+                    dialog.dismiss()
+                }
+
+                val textView = bindingPopUp.spannableTextViewDialog
+                val spannableString =
+                    SpannableString("If you'd like to share your thoughts or provide Feedback , please feel free to do so. Your input is valuable, and I'd appreciate hearing from you.❤\uFE0F\"\n ")
+
+                val clickableSpan = object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        val websiteUrl =
+                            "https://forms.gle/4gC2XzHDCaio7hUh8"
+                        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(websiteUrl))
+                        startActivity(intent)
+                    }
+                }
+
+                spannableString.setSpan(
+                    clickableSpan,
+                    48, 56,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+                val blueColor = Color.BLUE
+                spannableString.setSpan(
+                    ForegroundColorSpan(blueColor),
+                    48, 56,
+                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
+                )
+
+                textView.text = spannableString
+                textView.movementMethod = LinkMovementMethod.getInstance()
+
+                dialog.show()
+
+            }
+
+            exit.setOnClickListener {
+                popupWindow.dismiss()
+                requireActivity().finish()
+            }
+
+
+        }
 
     }
 

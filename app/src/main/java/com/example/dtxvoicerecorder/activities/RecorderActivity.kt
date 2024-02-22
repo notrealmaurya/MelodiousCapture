@@ -1,4 +1,4 @@
-package com.example.dtxvoicerecorder
+package com.example.dtxvoicerecorder.activities
 
 import android.content.Context
 import android.media.MediaRecorder
@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.room.Room
+import com.example.dtxvoicerecorder.R
+import com.example.dtxvoicerecorder.utils.Timer
 import com.example.dtxvoicerecorder.database.AppDatabase
 import com.example.dtxvoicerecorder.database.RecorderData
 import com.example.dtxvoicerecorder.databinding.ActivityRecorderBinding

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/LayoutStyle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <com.airbnb.lottie.LottieAnimationView
+        android:layout_width="80dp"
+        android:layout_height="90dp"
+        android:layout_marginTop="20dp"
+        android:scaleType="centerCrop"
+        app:lottie_autoPlay="true"
+        app:lottie_fileName="mic.json"
+        app:lottie_loop="true" />
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:text="Build Version : 1.0"
+        android:textColor="@color/ImageViewAndTextViewColour"
+        android:textSize="14sp" />
+
+    <TextView
+        android:textColor="@color/ImageViewAndTextViewColour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="Developed by Detroit.loop"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/spannableTextView_Dialog"
+        android:textColor="@color/ImageViewAndTextViewColour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="40dp"
+        android:gravity="center"
+        android:text="If you'd like to share your thoughts or provide feedback, please feel free to do so. Your input is valuable, and I'd appreciate hearing from you.❤️"
+        android:textSize="14sp" />
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/about_dialog_thankyou_button"
+        style="@style/PopUpWindowStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
+        android:padding="20dp"
+        android:text="THANK You❤️" />
+
+</LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.dtxvoicerecorder
 
+
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
@@ -7,13 +8,15 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.dtxvoicerecorder.activities.HomeFragment
 import com.example.dtxvoicerecorder.databinding.ActivityMainBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

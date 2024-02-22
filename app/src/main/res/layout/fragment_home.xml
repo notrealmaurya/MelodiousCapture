@@ -5,7 +5,7 @@
     style="@style/LayoutStyle"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".HomeFragment">
+    tools:context=".activities.HomeFragment">
 
 
     <LinearLayout
@@ -29,8 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_gravity="center_vertical"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginHorizontal="15dp"
             android:layout_marginBottom="10dp"
             android:visibility="visible">
 
@@ -44,11 +43,14 @@
                 app:queryHint="Search Recording Files" />
 
             <ImageView
-                android:id="@+id/mainActivityMenu"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/menuHomeFragment"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:padding="2dp"
+                android:background="@drawable/bg_ripplefactor"
+                android:layout_marginEnd="15dp"
                 android:src="@drawable/icon_menu" />
 
 
@@ -69,7 +71,7 @@
                 android:layout_marginStart="30dp"
                 android:background="@drawable/bg_ripplefactor"
                 android:clickable="true"
-                android:padding="15dp"
+                android:padding="17dp"
                 android:src="@drawable/icon_close" />
 
             <TextView
@@ -89,7 +91,7 @@
                 android:layout_marginEnd="30dp"
                 android:background="@drawable/bg_ripplefactor"
                 android:clickable="true"
-                android:padding="8dp"
+                android:padding="11dp"
                 android:src="@drawable/icon_select_none" />
 
 

@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    tools:context=".PlayerActivity">
+    tools:context=".activities.PlayerActivity">
 
     <LinearLayout
         android:id="@+id/layout_topBTN"

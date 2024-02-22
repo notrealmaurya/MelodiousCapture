@@ -1,9 +1,10 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
     id("com.google.devtools.ksp")
 }
-
 android {
     namespace = "com.example.dtxvoicerecorder"
     compileSdk = 34
@@ -64,13 +65,27 @@ dependencies {
     //lottie
     implementation("com.airbnb.android:lottie:6.0.1")
 
-    val room_version = "2.6.1"
-    implementation("androidx.room:room-runtime:$room_version")
-    annotationProcessor("androidx.room:room-compiler:$room_version")
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.room.compiler)
     // To use Kotlin Symbol Processing (KSP)
-    ksp("androidx.room:room-compiler:$room_version")
+    ksp(libs.androidx.room.room.compiler)
     // optional - Kotlin Extensions and Coroutines support for Room
-    implementation("androidx.room:room-ktx:$room_version")
+    implementation(libs.androidx.room.ktx)
 
+    //retrofit
+    implementation(libs.logging.interceptor)
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    //noinspection UseTomlInstead
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+    //hilt injection
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+
+    //lifecycle ViewModel LiveData
+    implementation(libs.androidx.lifecycle.viewmodel.ktx)
+    implementation(libs.androidx.lifecycle.livedata.ktx)
 
 }

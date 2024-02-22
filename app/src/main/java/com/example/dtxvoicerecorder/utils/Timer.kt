@@ -1,4 +1,4 @@
-package com.example.dtxvoicerecorder
+package com.example.dtxvoicerecorder.utils
 
 import android.os.Looper
 import android.os.Handler
