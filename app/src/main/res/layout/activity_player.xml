@@ -12,6 +12,7 @@
 
     <LinearLayout
         android:id="@+id/layout_topBTN"
+        style="@style/StatusBarLayoutStyle"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:orientation="horizontal">
@@ -37,6 +38,7 @@
             android:scrollHorizontally="true"
             android:singleLine="true"
             android:text="This is Song Name"
+            android:textColor="@color/ImageViewAndTextViewColour"
             android:textSize="16sp" />
 
 
@@ -48,8 +50,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/layout_topBTN"
-        android:gravity="center"
         android:layout_marginTop="40dp"
+        android:gravity="center"
         android:orientation="vertical">
 
         <com.google.android.material.imageview.ShapeableImageView
@@ -68,9 +70,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_above="@id/PlayerLayoutSeekBar"
         android:gravity="center"
-        android:layout_above="@id/PlayerLayoutSeekBar">
+        android:orientation="horizontal">
 
         <com.google.android.material.chip.Chip
             android:id="@+id/chipPlayerActivity"
